@@ -1,0 +1,79 @@
+buildscript {
+	ext {
+		springBootVersion="1.5.3.RELEASE"
+	}
+
+	repositories {
+		/*maven {
+			url = "https://nexus-build-01.buildingiq.com/nexus/content/groups/public-proxy"
+		}
+		maven {
+			url = "https://nexus-build-01.buildingiq.com/nexus/content/repositories/public/"
+		}
+		maven {
+			url = "https://nexus-build-01.buildingiq.com/nexus/content/repositories/releases"
+		}
+		maven {
+			url = "https://nexus-build-01.buildingiq.com/nexus/content/repositories/snapshots"
+		}*/
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.7
+
+repositories {
+	/*maven {
+		url = "https://nexus-build-01.buildingiq.com/nexus/content/groups/public-proxy"
+	}
+	maven {
+		url = "https://nexus-build-01.buildingiq.com/nexus/content/repositories/public/"
+	}
+	maven {
+		url = "https://nexus-build-01.buildingiq.com/nexus/content/repositories/releases"
+	}
+	maven {
+		url = "https://nexus-build-01.buildingiq.com/nexus/content/repositories/snapshots"
+	}*/
+	mavenCentral()
+}
+
+def springBootVersion = "1.5.3.RELEASE"
+def springOAuth2Version = "2.1.0.RELEASE"
+def springJWTVersion = "1.0.7.RELEASE"
+
+def testNGVersion = "6.8.8"
+def mockitoVersion = "1.9.5"
+def h2Version = "1.4.195"
+
+dependencies {
+	//Webjars
+	compile('org.webjars:bootstrap:3.3.7')
+	compile('org.webjars:jquery:3.2.0')
+	compile('org.webjars:webjars-locator')
+
+	//Project dependenciees
+	compile('org.springframework.boot:spring-boot-starter-web:' + springBootVersion)
+	compile('org.springframework.boot:spring-boot-starter-security:' + springBootVersion)
+	compile('org.springframework.boot:spring-boot-started-data-jpa:' + springBootVersion)
+	compile('com.h2database:h2:' + h2Version)
+	
+	compile('org.springframework.security.oauth:spring-security-oauth2:' + springOAuth2Version);
+	compile('org.springframework.security:spring-security-jwt:' + springJWTVersion);
+	
+	
+	//Test dependencies
+	testCompile('org.springframework.boot:spring-boot-starter-test:' + springBootVersion)
+	testCompile('org.testng:testng:' + testNGVersion)
+	testCompile('org.mockito:mockito-all:' + mockitoVersion)
+}
