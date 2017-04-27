@@ -65,12 +65,11 @@ dependencies {
 	//Project dependenciees
 	compile('org.springframework.boot:spring-boot-starter-web:' + springBootVersion)
 	compile('org.springframework.boot:spring-boot-starter-security:' + springBootVersion)
-	compile('org.springframework.boot:spring-boot-started-data-jpa:' + springBootVersion)
+	compile('org.springframework.boot:spring-boot-starter-data-jpa:' + springBootVersion)
 	compile('com.h2database:h2:' + h2Version)
 	
 	compile('org.springframework.security.oauth:spring-security-oauth2:' + springOAuth2Version);
 	compile('org.springframework.security:spring-security-jwt:' + springJWTVersion);
-	
 	
 	//Test dependencies
 	testCompile('org.springframework.boot:spring-boot-starter-test:' + springBootVersion)
