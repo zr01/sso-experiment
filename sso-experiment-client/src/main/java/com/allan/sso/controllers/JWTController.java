@@ -15,6 +15,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -28,19 +29,21 @@ public class JWTController {
 	static final Logger l = LoggerFactory.getLogger(JWTController.class);
 	
 	@RequestMapping("/sso/callback")
-	public Map<String, String> retrieveTokenAndRedirect(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	public String retrieveTokenAndRedirect(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		//See if we got the code
 		l.info("We got the code: {}", request.getParameter("code"));
 		
 		//Let's see if we can get the token
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
-		String callbackString = "code=${code}&grant_type=authorization_code&client_secret=sso-experiment-client-secret&client_id=sso-experiment-client&redirect_uri=http://localhost:8081/sso/callback".replace("${code}", request.getParameter("code"));
+		//client_secret=sso-experiment-client-secret&client_id=sso-experiment-client&
+		String callbackString = "code=${code}&grant_type=authorization_code&redirect_uri=http://localhost:8081/sso/callback".replace("${code}", request.getParameter("code"));
 		
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 //		headers.add("Authorization", "Basic " + Base64Utils.encodeToString("sso-experiment-client:sso-experiment-client-secret".getBytes()));
 //		headers.add("Authorization", "Basic " + Base64Utils.encodeToString("sso:pw".getBytes()));
 		headers.add("X-Requested-With", "XMLHttpRequest");
+		headers.add("Authorization", "Basic " + Base64Utils.encodeToString("sso-experiment-client:sso-experiment-client-secret".getBytes()));
 		
 		HttpEntity<String> entity = new HttpEntity<String>(callbackString, headers);
 		
@@ -51,10 +54,11 @@ public class JWTController {
 			
 			//Redirect when successful
 			//response.sendRedirect("/hello");
-			Map<String, String> token = new HashMap<>();
-			token.put("jwt", resp.getBody());
+//			Map<String, String> token = new HashMap<>();
+//			token.put("jwt", resp.getBody());
 			
-			return token;
+			
+			return resp.getBody();
 		}catch(RestClientException e){
 			l.error("Error: {}", e.getLocalizedMessage());
 			l.error("Exception: ", e);

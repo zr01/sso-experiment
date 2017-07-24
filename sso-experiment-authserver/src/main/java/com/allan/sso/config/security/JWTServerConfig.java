@@ -78,11 +78,11 @@ public class JWTServerConfig extends AuthorizationServerConfigurerAdapter {
 		clients
 			.inMemory()
 				.withClient("sso-experiment-client") //Should be setup externally
-					.authorizedGrantTypes("authorization_code", "implicit")
+					.authorizedGrantTypes("authorization_code", "implicit", "refresh_token")
 					.authorities("ROLE_CLIENT", "ROLE_ADMIN")
 					.scopes("read", "write")
 					.resourceIds(resourceId)
-					.accessTokenValiditySeconds(15)
+					.accessTokenValiditySeconds(300)
 					.autoApprove(true)
 					.secret("sso-experiment-client-secret") //Should be setup externally
 		;
